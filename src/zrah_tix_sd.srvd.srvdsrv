@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service definition'
+define service Zrah_tix_sd {
+  expose zrah_tix_c_ticket as Ticket;
+  expose zrah_tix_c_actvty as Activity;
+}
