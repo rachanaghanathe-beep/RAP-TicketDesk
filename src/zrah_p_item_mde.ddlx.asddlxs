@@ -1,0 +1,79 @@
+@Metadata.layer: #CORE
+
+@UI.headerInfo: {
+  typeName:       'Item',
+  typeNamePlural: 'Items',
+  title:          { type: #STANDARD, value: 'Name' },
+  description:    { type: #STANDARD, value: 'Description' }
+}
+
+annotate entity ZRAH_P_ITEM
+    with 
+{
+  @UI.facet: [
+    -- 1. Header Facet (KPI Box)
+    {
+      id:              'HeaderPrice',
+      purpose:         #HEADER,
+      type:            #DATAPOINT_REFERENCE,
+      targetQualifier: 'PricePoint',
+      position:        10
+    },
+     { id: 'HeaderActions', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'Actions', position: 5 },
+
+    -- 2. Main Section
+    {  
+      id:              'GeneralSection',
+      purpose:         #STANDARD,
+      type:            #COLLECTION,
+      label:           'General Information',
+      position:        10
+    },
+
+    -- 3. Basic Details Card
+    { 
+      id:              'BasicData',
+      parentId:        'GeneralSection',
+      type:            #FIELDGROUP_REFERENCE,
+      targetQualifier: 'BasicGroup',
+      label:           'Basic Details',
+      position:        10
+    },
+
+    -- 4. Pricing & Status Card (UNCOMMENTED & MATCHED)
+    { 
+      id:              'PriceData',
+      parentId:        'GeneralSection',
+      type:            #FIELDGROUP_REFERENCE,
+      targetQualifier: 'PriceGroup',
+      label:           'Pricing & Status',
+      position:        20
+    }
+  ]
+  
+  @UI.lineItem:       [{ position: 5, label: 'Item ID' }]
+  @UI.fieldGroup:     [{ qualifier: 'BasicGroup', position: 5, label: 'Item ID' }]
+  @UI.selectionField: [{ position: 5 }]
+  ItemId;
+  
+  @UI.lineItem:       [{ position: 10, label: 'Name' }]
+  @UI.fieldGroup:     [{ qualifier: 'BasicGroup', position: 10, label: 'Name' }]
+  @UI.selectionField: [{ position: 10 }]
+  Name;
+  
+  @UI.lineItem:       [{ position: 20, label: 'Description' }]
+  @UI.fieldGroup:     [{ qualifier: 'BasicGroup', position: 20, label: 'Description' }]
+  Description;
+  
+  @UI.lineItem:       [{ position: 30, label: 'Price' }]
+  @UI.fieldGroup:     [{ qualifier: 'PriceGroup', position: 10, label: 'Price' }]
+  @UI.dataPoint:      { qualifier: 'PricePoint', title: 'Total Price' }
+  Price;
+  
+  @UI.lineItem:       [{ position: 40, label: 'Status Code', criticality: 'StatusCriticality' }, { type: #FOR_ACTION, dataAction: 'SetStatusActive', label: 'Set Active' }] -- Table Toolbar Button]
+  @UI.identification: [
+    { type: #FOR_ACTION, dataAction: 'SetStatusActive', label: 'Set Active' }] -- Main Page Header Button
+  @UI.fieldGroup:     [{ qualifier: 'PriceGroup', position: 20, label: 'Status Code', criticality: 'StatusCriticality' }]
+  @UI.selectionField: [{ position: 20 }]
+  StatusCode;
+}

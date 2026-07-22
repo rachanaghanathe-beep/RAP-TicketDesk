@@ -1,0 +1,40 @@
+managed implementation in class zbp_rah_root_item unique;
+strict ( 2 );
+with draft;
+define behavior for ZRAH_ROOT_ITEM alias Item
+persistent table zrah_item
+draft table ZRAH_ITEM_DRAFT
+lock master
+total etag LocalLastChangedAt
+authorization master ( instance )
+etag master LastChangedAt
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly, numbering : managed ) ItemId;
+  determination SetDefaultStatus on modify { create; }
+  validation ValidatePrice on save { field Price; create; update; }
+  action SetStatusActive result [1] $self;
+
+   draft action Activate optimized;
+  draft action Edit;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare {   validation ValidatePrice; }
+
+
+  mapping for zrah_item
+    {
+      ItemId      = item_id;
+      Name        = name;
+      Description = description;
+      Price       = price;
+      StatusCode  = status_code;
+      LastChangedAt = last_changed_at;
+      LocalCreatedAt = local_created_at;
+      LocalCreatedBy = local_created_by;
+      LocalLastChangedAt = local_last_changed_at;
+      LocalLastChangedBy = local_last_changed_by;
+    }
+}

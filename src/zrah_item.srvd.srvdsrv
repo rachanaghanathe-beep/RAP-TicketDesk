@@ -1,0 +1,5 @@
+@EndUserText.label: 'SD - Item'
+define service ZRAH_ITEM {
+  expose ZRAH_P_ITEM      as Item;
+  expose ZRAH_I_STATUS_VH as StatusVH;
+}
